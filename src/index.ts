@@ -5,5 +5,5 @@
  * E.g. `import { createPackageName, PackageNameOptions } from 'npm-package-name`
  */
 
-export { createGFError } from './good-flow/gf-error'
+export { createGFError } from './good-flow/error'
 export * from './types'

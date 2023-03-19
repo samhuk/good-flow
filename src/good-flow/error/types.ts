@@ -1,6 +1,6 @@
 import { CallSite } from 'stack-utils'
-import { GFAdvice } from '../gf-advice/types'
-import { GFString } from '../gf-string/types'
+import { GFAdvice } from '../advice/types'
+import { GFString } from '../string/types'
 
 export type GFErrorOrError = GFError | Error
 

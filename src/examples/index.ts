@@ -1,7 +1,7 @@
 import * as fs from 'fs'
 import { exit } from 'process'
-import { createGFError } from '../good-flow/gf-error'
-import { GFResult } from '../good-flow/gf-result/types'
+import { createGFError } from '../good-flow/error'
+import { GFResult } from '../good-flow/result/types'
 
 const subTask = (path: string): GFResult<string> => {
   try {

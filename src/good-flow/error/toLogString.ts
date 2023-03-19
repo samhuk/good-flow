@@ -2,8 +2,8 @@ import colors from 'colors/safe'
 import StackUtils, { CallSite } from 'stack-utils'
 import { toLogString as termTreeNodeToLogString } from '../../term-tree-formatter'
 import { Node, NodeContent } from '../../term-tree-formatter/types'
-import { GFTip, GFAdvice } from '../gf-advice/types'
-import { normalizeGFString } from '../gf-string'
+import { GFTip, GFAdvice } from '../advice/types'
+import { normalizeGFString } from '../string'
 import { GFError, GFErrorInner, GFErrorOrError } from './types'
 
 const stackTraceTologString = (stackTraceString: string) => {

@@ -1,4 +1,4 @@
-import { GFString } from '../gf-string/types'
+import { GFString } from '../string/types'
 
 export type GFTip = GFString | { msg: GFString, url?: string }
 
