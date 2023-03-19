@@ -1,6 +1,6 @@
 import { createGFError } from '.'
 
-describe('goflow/gf-error', () => {
+describe('good-flow/gf-error', () => {
   describe('createGFError', () => {
     const fn = createGFError
 
@@ -19,11 +19,11 @@ describe('goflow/gf-error', () => {
         // TODO: Obviously this is terrible. Must add ability to customize stack-trace behavoirs.
         // eslint-disable-next-line max-len
         expect(result).toBe(`[1m[31mError:[39m[22m Could not complete task.
-<anonymous> (C:/Users/samhuk/workspace/ts-packages/goflow/build-test/goflow/gf-error/index.spec.js:9:26)
+<anonymous> (C:/Users/samhuk/workspace/ts-packages/good-flow/build-test/good-flow/gf-error/index.spec.js:9:26)
 ┗━ [1mCaused by:[22m File [36m./foo/bar[39m not found.
-   <anonymous> (C:/Users/samhuk/workspace/ts-packages/goflow/build-test/goflow/gf-error/index.spec.js:11:18)
+   <anonymous> (C:/Users/samhuk/workspace/ts-packages/good-flow/build-test/good-flow/gf-error/index.spec.js:11:18)
    ┗━ [1mCaused by:[22m [[31mError[39m] ENOENT: File not found.
-      Object.<anonymous> (src/goflow/gf-error/index.spec.ts:13:20)
+      Object.<anonymous> (src/good-flow/gf-error/index.spec.ts:13:20)
       Promise.then.completed (node_modules/jest-circus/build/utils.js:293:28)
       new Promise (<anonymous>)
       callAsyncCircusFn (node_modules/jest-circus/build/utils.js:226:10)

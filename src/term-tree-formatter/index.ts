@@ -1,4 +1,4 @@
-import { createIndentationString } from '../goflow/common'
+import { createIndentationString } from '../good-flow/common'
 import { IndicatorType, Node, Row } from './types'
 
 const INDICATOR_TYPE_TO_STRING: { [type in IndicatorType]: string } = {

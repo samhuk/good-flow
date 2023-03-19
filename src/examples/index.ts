@@ -1,7 +1,7 @@
 import * as fs from 'fs'
 import { exit } from 'process'
-import { createGFError } from '../goflow/gf-error'
-import { GFResult } from '../goflow/gf-result/types'
+import { createGFError } from '../good-flow/gf-error'
+import { GFResult } from '../good-flow/gf-result/types'
 
 const subTask = (path: string): GFResult<string> => {
   try {
@@ -28,7 +28,7 @@ const task = (): GFResult<string[]> => {
       inner: errors,
       advice: {
         tips: [
-          { msg: c => `Check that configuration file at ${c.cyan(path)} exists.`, url: 'https://github.com/samhuk/goflow' },
+          { msg: c => `Check that configuration file at ${c.cyan(path)} exists.`, url: 'https://github.com/samhuk/good-flow' },
           c => `Check that the configuration file at ${c.cyan(path)} is accessible for your user account permissions.`,
         ],
       },

@@ -1,28 +1,28 @@
-<h1 align="center">GoFlow</h1>
+<h1 align="center">GoodFlow</h1>
 <p align="center">
-  <em>Go-like Javascript error handling</em>
+  <em>Improve how you do Javascript errors</em>
 </p>
 
 <p align="center">
   <a href="https://img.shields.io/badge/License-MIT-green.svg" target="_blank">
     <img src="https://img.shields.io/badge/License-MIT-green.svg" alt="license" />
   </a>
-  <a href="https://badge.fury.io/js/goflow.svg" target="_blank">
-    <img src="https://badge.fury.io/js/goflow.svg" alt="npm version" />
+  <a href="https://badge.fury.io/js/good-flow.svg" target="_blank">
+    <img src="https://badge.fury.io/js/good-flow.svg" alt="npm version" />
   </a>
 </p>
 
 ## Overview
 
-GoFlow improves your errors. GoFlow allows you to:
+GoodFlow improves how you do errors in Javascript:
 * Emit and handle errors in a flat, Go-like way, avoiding endless nested try-catch blocks and use of mutable `let` variables.
-* Endlessly nest errors with inner errors to attach useful context.
-* Print errors to console beautifully (see **Logging** section below).
+* Nest errors with inner errors to attach informative context.
+* Print errors to console beautifully.
 
 ## Usage
 
 ```typescript
-import { createGFError, GFResult } from 'goflow'
+import { createGFError, GFResult } from 'good-flow'
 
 const task = (path: string): GFResult<string> => {
   try {
@@ -47,7 +47,7 @@ exit(0)
 
 ## Logging
 
-Use `GFError.toLogString` to serialize a GoFlow error to a console-loggable string. A preview of this output for a relatively complex error:
+Use `GFError.toLogString` to serialize a GoodFlow error to a console-loggable string. A preview of this output for a relatively complex error:
 
 ![Logging Preview](./img/img1.png)
 

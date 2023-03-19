@@ -5,4 +5,4 @@
  * E.g. `import { PackageNameOptions } from 'npm-package-name`
  */
 
-export type { GFError } from './goflow/gf-error/types'
+export type { GFError } from './good-flow/gf-error/types'

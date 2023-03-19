@@ -1,5 +1,5 @@
 {
-  "name": "goflow",
+  "name": "good-flow",
   "version": "0.0.1",
   "description": "Go-like Javascript error handling",
   "main": "lib/index.js",
@@ -25,7 +25,7 @@
     "clean": "npm run clean-unit-tests && npm run clean-ts && npm run clean-ts-dist && npm run clean-examples",
     "check": "npm rum lint-errors-only && npm run build-ts && npm run unit-tests && echo Done!"
   },
-  "repository": "https://github.com/samhuk/goflow",
+  "repository": "https://github.com/samhuk/good-flow",
   "author": {
     "name": "Sam Hughes",
     "email": "samhughes1701@hotmail.co.uk",
