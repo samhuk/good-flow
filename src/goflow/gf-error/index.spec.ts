@@ -16,8 +16,6 @@ describe('goflow/gf-error', () => {
 
         const result = instance.toLogString()
 
-        fs.writeFileSync('out.dat', result)
-
         // eslint-disable-next-line max-len
         expect(result).toBe(`[1m[31mError:[39m[22m Could not complete task.
 <anonymous> (C:/Users/samhuk/workspace/ts-packages/goflow/build-test/goflow/gf-error/index.spec.js:33:26)
