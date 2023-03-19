@@ -6,3 +6,4 @@
  */
 
 export type { GFError } from './good-flow/gf-error/types'
+export type { GFResult } from './good-flow/gf-result/types'
