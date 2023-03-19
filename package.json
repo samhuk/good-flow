@@ -1,7 +1,7 @@
 {
   "name": "good-flow",
-  "version": "0.0.1",
-  "description": "Go-like Javascript error handling",
+  "version": "0.0.2",
+  "description": "Improve how you do Javascript errors",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
   "files": [
