@@ -12,22 +12,15 @@
       "preLaunchTask": "unitTestsDebugPreLaunchTask"
     },
     {
-      "name": "Run Integration Tests",
+      "name": "Run Examples",
       "type": "node",
       "request": "launch",
-      "program": "./build-integration-test/integrationTests/index.js",
+      "program": "./build-examples/examples/index.js",
       "args": [
           "--runInBand",
           "--no-cache"
       ],
-      "env": {
-        "DATABASE_NAME": "ts-pg-orm-integration-tests",
-        "DATABASE_USER": "postgres",
-        "DATABASE_PASSWORD": "postgres",
-        "DATABASE_HOST": "localhost",
-        "DATABASE_PORT": "5432"
-      },
-      "preLaunchTask": "IntegrationTestsDebugPreLaunchTask"
+      "preLaunchTask": "RunExamplesDebugPreLaunchTask"
     },
   ]
 }
