@@ -1,5 +1,4 @@
 import { createGFError } from '.'
-import * as fs from 'fs'
 
 describe('goflow/gf-error', () => {
   describe('createGFError', () => {
