@@ -2,10 +2,10 @@
   "name": "goflow",
   "version": "0.0.1",
   "description": "Go-like Javascript error handling",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
   "files": [
-    "dist/**/*"
+    "lib/**/*"
   ],
   "scripts": {
     "clean-unit-tests": "rimraf ./build-test",
@@ -14,7 +14,7 @@
     "unit-tests": "npm run clean-unit-tests && npm run build-unit-tests && npm run run-unit-tests",
     "lint": "eslint -c .eslintrc.json ./src --ext .ts",
     "lint-errors-only": "eslint -c .eslintrc.json ./src --ext .ts --quiet",
-    "clean-ts-dist": "rimraf ./dist",
+    "clean-ts-dist": "rimraf ./lib",
     "build-ts-dist": "npm run clean-ts-dist && tsc -p ./tsconfig.dist.json",
     "clean-ts": "rimraf ./build-ts",
     "build-ts": "npm run clean-ts && tsc -p ./tsconfig.all.json",
@@ -26,13 +26,16 @@
     "check": "npm rum lint-errors-only && npm run build-ts && npm run unit-tests && echo Done!"
   },
   "repository": "https://github.com/samhuk/goflow",
-  "author": "",
+  "author": {
+    "name": "Sam Hughes",
+    "email": "samhughes1701@hotmail.co.uk",
+    "url": "https://samhuk.com/about"
+  },
   "license": "MIT",
   "publishConfig": {
     "access": "public"
   },
   "dependencies": {
-    "@samhuk/type-helpers": "^1.0.3",
     "colors": "^1.4.0",
     "stack-utils": "^2.0.6"
   },
