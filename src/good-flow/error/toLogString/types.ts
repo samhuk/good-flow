@@ -13,18 +13,10 @@ export type GFErrorHeaderRenderer = (error: GFError) => GFString | GFString[]
 export type NativeErrorHeaderRenderer = (error: Error) => GFString | GFString[]
 
 export type ToLogStringOptions = {
-  nativeStackTraceRenderer?: NativeStackTraceRenderer
-  customStackTraceRenderer?: CustomStackTraceRenderer
-  rootErrorHeaderRenderer?: GFErrorHeaderRenderer
-  nonRootGFErrorHeaderRenderer?: GFErrorHeaderRenderer
-  nonRootNativeErrorHeaderRenderer?: NativeErrorHeaderRenderer
-}
-
-export type ResolvedToLogStringOptions = {
   /**
    * Controls the rendering of native stack traces (i.e. from the native Javascript `Error` class).
    *
-   * To illustrate where corresponds to and the default rendering:
+   * To illustrate where this corresponds to and the default rendering:
    * ```text
    * Error: Could not do task
    * task (path/to/file:1:1))
@@ -33,11 +25,11 @@ export type ResolvedToLogStringOptions = {
    * ...
    * ```
    */
-  nativeStackTraceRenderer: NativeStackTraceRenderer
+  nativeStackTraceRenderer?: NativeStackTraceRenderer
   /**
    * Controls the rendering of custom stack traces (captured with stack-util).
    *
-   * To illustrate where corresponds to and the default rendering:
+   * To illustrate where this corresponds to and the default rendering:
    * ```text
    * Error: Could not do task
    * task (path/to/file:1:1)) <-- This section
@@ -46,11 +38,11 @@ export type ResolvedToLogStringOptions = {
    * ...
    * ```
    */
-  customStackTraceRenderer: CustomStackTraceRenderer
+  customStackTraceRenderer?: CustomStackTraceRenderer
   /**
    * Controls the rendering of the header of the root error.
    *
-   * To illustrate where corresponds to and the default rendering:
+   * To illustrate where this corresponds to and the default rendering:
    * ```text
    * Error: Could not do task <-- This section
    * task (path/to/file:1:1))
@@ -59,11 +51,11 @@ export type ResolvedToLogStringOptions = {
    * ...
    * ```
    */
-  rootErrorHeaderRenderer: GFErrorHeaderRenderer
+  rootErrorHeaderRenderer?: GFErrorHeaderRenderer
   /**
    * Controls the rendering of the header of non-root errors.
    *
-   * To illustrate where corresponds to and the default rendering:
+   * To illustrate where this corresponds to and the default rendering:
    * ```text
    * Error: Could not do task
    * task (path/to/file:1:1))
@@ -72,11 +64,11 @@ export type ResolvedToLogStringOptions = {
    * ...
    * ```
    */
-  nonRootGFErrorHeaderRenderer: GFErrorHeaderRenderer
+  nonRootGFErrorHeaderRenderer?: GFErrorHeaderRenderer
   /**
    * Controls the rendering of the header of non-root native errors (i.e. the native Javascript `Error` class).
    *
-   * To illustrate where corresponds to and the default rendering:
+   * To illustrate where this corresponds to and the default rendering:
    * ```text
    * Error: Could not do task
    * task (path/to/file:1:1))
@@ -85,5 +77,7 @@ export type ResolvedToLogStringOptions = {
    * ...
    * ```
    */
-  nonRootNativeErrorHeaderRenderer: NativeErrorHeaderRenderer
+  nonRootNativeErrorHeaderRenderer?: NativeErrorHeaderRenderer
 }
+
+export type ResolvedToLogStringOptions = Required<ToLogStringOptions>
