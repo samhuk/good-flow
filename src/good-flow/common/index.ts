@@ -18,3 +18,7 @@ const _createIndentationString = (n: number): string => {
 }
 
 export const createIndentationString = (n: number): string => PREMADE_INDENTS[n] ?? _createIndentationString(n)
+
+export const ensureArray = <T extends any>(input: T | T[]): T[] => (Array.isArray(input)
+  ? input
+  : [input])
