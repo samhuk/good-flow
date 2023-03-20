@@ -18,6 +18,7 @@ GoodFlow improves how you do errors in Javascript:
 * Emit and handle errors in a flat, Go-like way, avoiding endless nested try-catch blocks and use of mutable `let` variables.
 * Nest errors with inner errors to attach informative context.
 * Print errors to console beautifully.
+* Serialize errors to make it a [DTO](https://en.wikipedia.org/wiki/Data_transfer_object) (e.g. to make it JSON-serializable).
 
 ## Usage
 
@@ -39,7 +40,7 @@ const task = (path: string): GFResult<string> => {
 const [taskResult, err] = task() // Go-like structure
 if (err != null) {
   console.log(err.toLogString()) // Log error
-  myErrorDatabaseService.store(err.serialize()) // Serialize error
+  myErrorDatabaseService.store(JSON.stringify(err.serialize())) // Serialize and JSON-ify error
   exit(1)
 }
 
