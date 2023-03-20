@@ -38,7 +38,8 @@ const task = (path: string): GFResult<string> => {
 
 const [taskResult, err] = task() // Go-like structure
 if (err != null) {
-  console.log(err.toLogString()) // Log error (including, recursively, any of it's inner errors)
+  console.log(err.toLogString()) // Log error
+  myErrorDatabaseService.store(err.serialize()) // Serialize error
   exit(1)
 }
 
