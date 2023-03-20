@@ -1,6 +1,17 @@
 import StackUtils from 'stack-utils'
+import { serialize } from './serialization'
 import { toLogString } from './toLogString'
-import { GFError, GFErrorOptions } from './types'
+import { GFError, GFErrorOptions, StackTrace } from './types'
+
+export const GF_ERROR_IDENTIFIER_PROP_NAME = '__gfError'
+
+export const isGFError = (error: GFError | Error): error is GFError => (
+  GF_ERROR_IDENTIFIER_PROP_NAME in error
+)
+
+export const isStackTraceNative = (stackTrace: StackTrace): stackTrace is string => (
+  typeof stackTrace === 'string'
+)
 
 const createDefaultStackTrace = () => new StackUtils({ cwd: process.cwd(), internals: StackUtils.nodeInternals() }).capture(3).slice(2)
 
@@ -39,6 +50,8 @@ export const createGFError = (options: GFErrorOptions): GFError => {
      */
     stack: options.stack !== undefined ? options.stack : createDefaultStackTrace(),
     toLogString: _options => toLogString(error, _options),
+    serialize: () => serialize(error),
+    [GF_ERROR_IDENTIFIER_PROP_NAME]: true,
   }
 
   return error

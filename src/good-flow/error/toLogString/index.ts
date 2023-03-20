@@ -1,5 +1,6 @@
 import colors from 'colors/safe'
 import StackUtils from 'stack-utils'
+import { isGFError, isStackTraceNative } from '..'
 import { toLogString as termTreeNodeToLogString } from '../../../term-tree-formatter'
 import { Node, NodeContent } from '../../../term-tree-formatter/types'
 import { ensureArray } from '../../common'
@@ -21,7 +22,7 @@ const DEFAULT_NATIVE_STACK_TRACE_RENDERER: NativeStackTraceRenderer = stack => {
   return st.clean(stack).trimEnd().split('\n')
 }
 
-const DEFAULT_CUSTOM_STACK_TRACE_RENDERER: CustomStackTraceRenderer = stack => (
+export const DEFAULT_CUSTOM_STACK_TRACE_RENDERER: CustomStackTraceRenderer = stack => (
   stack.map(cs => `${cs.getFunctionName() ?? '<anonymous>'} (${cs.getFileName().replace(/\\/g, '/')}:${cs.getLineNumber()}:${cs.getColumnNumber()})`)
 )
 
@@ -44,13 +45,13 @@ const normalizeStackTraceRendererOutput = (output: StackTraceRendererOutput): st
 const singleErrorInnerToNode = (
   error: GFErrorOrError,
   options: ResolvedToLogStringOptions,
-): Node => (error instanceof Error
-  ? {
-    content: ensureArray(options.nonRootNativeErrorHeaderRenderer(error)).map(normalizeGFString)
-      .concat(normalizeStackTraceRendererOutput(options.nativeStackTraceRenderer(error.stack))),
-  }
+): Node => (isGFError(error)
   // eslint-disable-next-line @typescript-eslint/no-use-before-define
-  : errorToNode(error, false, options))
+  ? errorToNode(error, false, options)
+  : {
+    content: ensureArray(options.nonRootNativeErrorHeaderRenderer(error)).map(gfString => normalizeGFString(gfString))
+      .concat(normalizeStackTraceRendererOutput(options.nativeStackTraceRenderer(error.stack))),
+  })
 
 const errorInnerToNodes = (inner: GFErrorInner, options: ResolvedToLogStringOptions): Node[] => (
   ensureArray(inner).map(singleInner => singleErrorInnerToNode(singleInner, options))
@@ -61,7 +62,7 @@ const stackTraceToNodeContent = (
   options: ResolvedToLogStringOptions,
 ): NodeContent => (
   normalizeStackTraceRendererOutput(
-    typeof stackTrace === 'string'
+    isStackTraceNative(stackTrace)
       ? options.nativeStackTraceRenderer(stackTrace)
       : options.customStackTraceRenderer(stackTrace),
   )
@@ -78,7 +79,7 @@ const errorToNode = (
    */
   const headerContent = ensureArray(
     (isRoot ? options.rootErrorHeaderRenderer : options.nonRootGFErrorHeaderRenderer)(error),
-  ).map(normalizeGFString)
+  ).map(gfString => normalizeGFString(gfString))
   const stackTraceContent = error.stack != null ? stackTraceToNodeContent(error.stack, options) : []
   const innerErrorNodes = error.inner != null ? errorInnerToNodes(error.inner, options) : []
   const adviceNodes = error.advice != null ? adviceToNodes(error.advice) : []

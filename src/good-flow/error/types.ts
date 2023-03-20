@@ -1,6 +1,8 @@
 import { CallSite } from 'stack-utils'
+import { GF_ERROR_IDENTIFIER_PROP_NAME } from '.'
 import { GFAdvice } from '../advice/types'
 import { GFString } from '../string/types'
+import { SerializedGFError, SerializeGFErrorOptions } from './serialization/types'
 import { ToLogStringOptions } from './toLogString/types'
 
 export type StackTrace = CallSite[] | string
@@ -61,4 +63,25 @@ export type GFError = {
      */
     options?: ToLogStringOptions
   ) => string
+  /**
+   * Serializes the error. This is useful if you need to, for example, JSON-serialize
+   * the error in order to store it or transfer it over a network.
+   *
+   * This essentially involves normalizing any and all non-serializable data types,
+   * such as functions, dates, etc., either by removing them or converting them to
+   * their corresponding serializable form, for example `string`, `number`, etc.
+   *
+   * @example
+   * import { createGFError } from 'good-flow'
+   * const error = createGFError({
+   *   msg: 'Could not do task',
+   *   inner: e,
+   * })
+   * const serializedError = error.serialize()
+   * const serializedErrorNoColor = error.serialize({ disableColors: true })
+   *
+   * const errorJson = JSON.stringify(serializedError)
+   */
+  serialize: (options?: SerializeGFErrorOptions) => SerializedGFError
+  [GF_ERROR_IDENTIFIER_PROP_NAME]: true
 }
