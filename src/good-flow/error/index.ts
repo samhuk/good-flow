@@ -50,6 +50,12 @@ export const createGFError = (options: GFErrorOptions): GFError => {
      */
     stack: options.stack !== undefined ? options.stack : createDefaultStackTrace(),
     toLogString: _options => toLogString(error, _options),
+    log: _options => {
+      const logString = toLogString(error, _options)
+      const outlet = _options?.outlet ?? 'log'
+      console[outlet](logString)
+      return logString
+    },
     serialize: _options => serialize(error, _options),
     [GF_ERROR_IDENTIFIER_PROP_NAME]: true,
   }

@@ -30,35 +30,47 @@ stack trace line 2
       stack trace line 1
       stack trace line 2`)
       })
+    })
 
-      test('serialize', () => {
-        const instance = fn({
-          msg: 'Could not complete task.',
-          inner: fn({
-            msg: c => `File ${c.cyan('./foo/bar')} not found.`,
-            inner: new Error('ENOENT: File not found.'),
-          }),
-        })
+    test('serialize', () => {
+      const instance = fn({
+        msg: 'Could not complete task.',
+        inner: fn({
+          msg: c => `File ${c.cyan('./foo/bar')} not found.`,
+          inner: new Error('ENOENT: File not found.'),
+        }),
+      })
 
-        const result = instance.serialize({
-          customStackTraceSerializer: callSites => '[fixed stack trace]',
-          nativeStackTraceSerializer: stack => '[fixed stack trace]',
-        })
+      const result = instance.serialize({
+        customStackTraceSerializer: callSites => '[fixed stack trace]',
+        nativeStackTraceSerializer: stack => '[fixed stack trace]',
+      })
 
-        expect(result).toEqual({
-          msg: 'Could not complete task.',
+      expect(result).toEqual({
+        msg: 'Could not complete task.',
+        stack: '[fixed stack trace]',
+        inner: {
+          msg: 'File \u001b[36m./foo/bar\u001b[39m not found.',
           stack: '[fixed stack trace]',
           inner: {
-            msg: 'File \u001b[36m./foo/bar\u001b[39m not found.',
+            name: 'Error',
+            message: 'ENOENT: File not found.',
             stack: '[fixed stack trace]',
-            inner: {
-              name: 'Error',
-              message: 'ENOENT: File not found.',
-              stack: '[fixed stack trace]',
-            },
           },
-        })
+        },
       })
+    })
+
+    test('log', () => {
+      const instance = fn({
+        msg: 'Could not complete task.',
+        inner: fn({
+          msg: c => `File ${c.cyan('./foo/bar')} not found.`,
+          inner: new Error('ENOENT: File not found.'),
+        }),
+      })
+
+      expect(() => instance.log()).not.toThrow()
     })
   })
 })

@@ -27,9 +27,11 @@ import { createGFError, GFResult } from 'good-flow'
 
 const task = (path: string): GFResult<string> => {
   try {
-    return [fs.readFileSync(path, { encoding: 'utf8' }), null]
+    // Emit successful result
+    return [fs.readFileSync(path, { encoding: 'utf8' })]
   }
   catch (e: any) {
+    // Emit unsuccessful result with error
     return [undefined, createGFError({
       msg: c => `Could not read file at ${c.cyan(path)}.`,
       inner: e,
@@ -37,10 +39,15 @@ const task = (path: string): GFResult<string> => {
   }
 }
 
-const [taskResult, err] = task() // Go-like structure
+const [taskResult, err] = task()
+// Handle error
 if (err != null) {
-  console.log(err.toLogString()) // Log error
-  myErrorDatabaseService.store(JSON.stringify(err.serialize())) // Serialize and JSON-ify error
+  // Log error (simple)
+  err.log()
+  // Log error (explicit)
+  console.log(err.toLogString())
+  // Serialize and JSON-ify error
+  myErrorDatabaseService.store(JSON.stringify(err.serialize()))
   exit(1)
 }
 

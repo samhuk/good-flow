@@ -64,6 +64,24 @@ export type GFError = {
     options?: ToLogStringOptions
   ) => string
   /**
+   * Logs this error to `console` (see `options.outlet` for customizing which console outlet).
+   *
+   * @returns The string that was logged.
+   */
+  log: (
+    /**
+     * Optional options to customize the rendering of the error.
+     */
+    options?: ToLogStringOptions & {
+      /**
+       * Which `console` outlet to log to.
+       *
+       * @default `log` // E.g. console.log
+       */
+      outlet: 'log' | 'warn' | 'error' | 'info'
+    }
+  ) => string
+  /**
    * Serializes the error. This is useful if you need to, for example, JSON-serialize
    * the error in order to store it or transfer it over a network.
    *
