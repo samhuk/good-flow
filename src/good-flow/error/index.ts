@@ -1,4 +1,5 @@
 import StackUtils from 'stack-utils'
+import { GFString } from '../string/types'
 import { serialize } from './serialization'
 import { toLogString } from './toLogString'
 import { GFError, GFErrorOptions, StackTrace } from './types'
@@ -39,24 +40,30 @@ const createDefaultStackTrace = () => new StackUtils({ cwd: process.cwd(), inter
  * if (err != null)
  *   console.log(err.toLogString()) // Do something with error
  */
-export const createGFError = (options: GFErrorOptions): GFError => {
+export const createGFError = (options: GFErrorOptions | GFString): GFError => {
+  const _options: GFErrorOptions = typeof options === 'string' || typeof options === 'function'
+    ? {
+      msg: options,
+    }
+    : options
+
   const error: GFError = {
-    msg: options.msg,
-    inner: options.inner,
-    advice: options.advice,
-    /* If the user specifies the stack as a stack, then use it.
+    msg: _options.msg,
+    inner: _options.inner,
+    advice: _options.advice,
+    /* If the user specifies the stack as a non-null stack, then use it.
      * Else, if the the user specifies a null stack, then also use it (which means the error is stackless).
      * Else (user has not explicitly specified it), then create a default one and use it.
      */
-    stack: options.stack !== undefined ? options.stack : createDefaultStackTrace(),
-    toLogString: _options => toLogString(error, _options),
-    log: _options => {
-      const logString = toLogString(error, _options)
-      const outlet = _options?.outlet ?? 'log'
+    stack: _options.stack !== undefined ? _options.stack : createDefaultStackTrace(),
+    toLogString: __options => toLogString(error, __options),
+    log: __options => {
+      const logString = toLogString(error, __options)
+      const outlet = __options?.outlet ?? 'log'
       console[outlet](logString)
       return logString
     },
-    serialize: _options => serialize(error, _options),
+    serialize: __options => serialize(error, __options),
     [GF_ERROR_IDENTIFIER_PROP_NAME]: true,
   }
 

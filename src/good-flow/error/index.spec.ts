@@ -4,6 +4,10 @@ describe('good-flow/gf-error', () => {
   describe('createGFError', () => {
     const fn = createGFError
 
+    test('init with only msg GFString', () => {
+      expect(() => fn('This is an error')).not.toThrow()
+    })
+
     describe('toLogString', () => {
       test('basic test', () => {
         const instance = fn({
