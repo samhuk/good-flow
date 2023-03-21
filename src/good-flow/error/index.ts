@@ -64,6 +64,20 @@ export const createGFError = (options: GFErrorOptions | GFString): GFError => {
       return logString
     },
     serialize: __options => serialize(error, __options),
+    wrap: outerError => {
+      outerError.addInner(error)
+      return outerError
+    },
+    addInner: inner => {
+      if (error.inner == null)
+        error.inner = inner
+      else if (Array.isArray(error.inner))
+        error.inner.push(inner)
+      else
+        error.inner = [error.inner, inner]
+
+      return error
+    },
     [GF_ERROR_IDENTIFIER_PROP_NAME]: true,
   }
 

@@ -76,5 +76,38 @@ stack trace line 2
 
       expect(() => instance.log()).not.toThrow()
     })
+
+    test('wrap', () => {
+      const inner = fn({ msg: 'Inner error', stack: null })
+      const outer = fn({ msg: 'Outer error', stack: null })
+
+      const newOuter = inner.wrap(outer).serialize()
+
+      expect(newOuter).toEqual({
+        msg: 'Outer error',
+        inner: {
+          msg: 'Inner error',
+        },
+      })
+    })
+
+    test('addInner', () => {
+      const inner1 = fn({ msg: 'Inner error 1', stack: null })
+      const inner2 = fn({ msg: 'Inner error 2', stack: null })
+      const outer = fn({ msg: 'Outer error', stack: null })
+
+      const newOuter = outer
+        .addInner(inner1)
+        .addInner(inner2)
+        .serialize()
+
+      expect(newOuter).toEqual({
+        msg: 'Outer error',
+        inner: [
+          { msg: 'Inner error 1' },
+          { msg: 'Inner error 2' },
+        ],
+      })
+    })
   })
 })

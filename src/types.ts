@@ -7,3 +7,4 @@
 
 export type { GFError } from './good-flow/error/types'
 export type { GFResult } from './good-flow/result/types'
+export type { GFString } from './good-flow/string/types'

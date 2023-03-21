@@ -28,7 +28,9 @@ export type GFErrorOptions = {
   /**
    * Optional stack trace of this error.
    *
-   * If this is not provided, a default one will be created.
+   * If this is not provided (or is `undefined`), a default one will be created.
+   *
+   * If you do not want the error to have a stack trace, set this explicitly to `null`.
    */
   stack?: CallSite[] | string
 }
@@ -101,5 +103,28 @@ export type GFError = {
    * const errorJson = JSON.stringify(serializedError)
    */
   serialize: (options?: SerializeGFErrorOptions) => SerializedGFError
+  /**
+   * Wraps this error with the provided outer error, returning the outer error.
+   *
+   * @returns The provided outer error
+   *
+   * @example
+   * import { createGFError } from 'good-flow'
+   * const innerError = createGFError('Inner error')
+   * const outerError = innerError.wrap(createGFError('Outer error'))
+   */
+  wrap: (outer: GFError) => GFError
+  /**
+   * Adds the provided inner error to this error, returning this error.
+   *
+   * @returns This error
+   *
+   * @example
+   * import { createGFError } from 'good-flow'
+   * const outerError = createGFError('Outer error')
+   *   .addInner(createGFError('Inner error 1'))
+   *   .addInner(createGFError('Inner error 2'))
+   */
+  addInner: (inner: GFError) => GFError
   [GF_ERROR_IDENTIFIER_PROP_NAME]: true
 }
