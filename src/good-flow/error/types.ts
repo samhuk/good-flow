@@ -80,7 +80,7 @@ export type GFError = {
        *
        * @default `log` // E.g. console.log
        */
-      outlet: 'log' | 'warn' | 'error' | 'info'
+      outlet?: 'log' | 'warn' | 'error' | 'info'
     }
   ) => string
   /**
