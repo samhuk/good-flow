@@ -14,7 +14,7 @@ export type NativeErrorHeaderRenderer = (error: Error) => GFString | GFString[]
 
 export type ToLogStringOptions = {
   /**
-   * Determines how the nodes of your error vertically spaced.
+   * Determines how many lines vertically separate the textual nodes of the error.
    *
    * @default 0 // (No vertical spacing)
    */
