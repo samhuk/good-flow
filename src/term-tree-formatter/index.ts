@@ -1,4 +1,4 @@
-import { createIndentationString, ensureArray, repeatStr } from '../good-flow/common'
+import { createIndentationString, ensureArray, repeat } from '../good-flow/common'
 import { IndicatorType, Node, ResolvedToLogStringOptions, Row, ToLogStringOptions } from './types'
 
 const INDICATOR_TYPE_TO_STRING: { [type in IndicatorType]: string } = {
@@ -9,6 +9,20 @@ const INDICATOR_TYPE_TO_STRING: { [type in IndicatorType]: string } = {
 }
 
 const PARENT_HAS_NEXT_SIBLING_INDICATOR_STRING = INDICATOR_TYPE_TO_STRING[IndicatorType.PARENT_HAS_NEXT_SIBLING]
+
+const createLinesBetweenNodesSeperator = (
+  row: Row,
+  options: ResolvedToLogStringOptions,
+  parentIndicatorsStr: string,
+  isLastIndicatorCustom: boolean,
+) => {
+  if (row.isRoot || options.linesBetweenNodes < 1)
+    return ''
+
+  const repeatingStr = `${parentIndicatorsStr}${!isLastIndicatorCustom ? PARENT_HAS_NEXT_SIBLING_INDICATOR_STRING : ''}`.trimEnd()
+
+  return repeat(repeatingStr, options.linesBetweenNodes).join('\n').concat('\n')
+}
 
 const rowToString = (row: Row, options: ResolvedToLogStringOptions): string => {
   let parentIndicatorsStr = ''
@@ -36,20 +50,9 @@ const rowToString = (row: Row, options: ResolvedToLogStringOptions): string => {
 
   const contentStr = nodeContent.join(`\n${contentLinesSeparator}`)
 
-  let emptyLinesAfterNodeContentSeperatorSuffix = ''
-  if (!isLastIndicatorCustom) {
-    if (!row.isLastSibling)
-      emptyLinesAfterNodeContentSeperatorSuffix += PARENT_HAS_NEXT_SIBLING_INDICATOR_STRING
-    else if (!row.isRoot)
-      emptyLinesAfterNodeContentSeperatorSuffix += createIndentationString(PARENT_HAS_NEXT_SIBLING_INDICATOR_STRING.length)
-    if (row.hasChildren && !isLastIndicatorCustom)
-      emptyLinesAfterNodeContentSeperatorSuffix += PARENT_HAS_NEXT_SIBLING_INDICATOR_STRING
-  }
-  const emptyLinesAfterNodeContentSuffix = options.linesBetweenNodes > 0
-    ? repeatStr(`\n${parentIndicatorsStr}${emptyLinesAfterNodeContentSeperatorSuffix}`, options.linesBetweenNodes).trimEnd()
-    : ''
+  const emptyLinesBeforeNodeContent = createLinesBetweenNodesSeperator(row, options, parentIndicatorsStr, isLastIndicatorCustom)
 
-  return `${indicatorsStr}${contentStr}${emptyLinesAfterNodeContentSuffix}`
+  return `${emptyLinesBeforeNodeContent}${indicatorsStr}${contentStr}`
 }
 
 const rowsToString = (rows: Row[], options: ResolvedToLogStringOptions): string => (
