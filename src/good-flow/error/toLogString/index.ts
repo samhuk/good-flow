@@ -93,6 +93,7 @@ const errorToNode = (
  * Resolves the given options, providing default values for nullish properties.
  */
 const resolveOptions = (options: ToLogStringOptions | undefined | null): ResolvedToLogStringOptions => ({
+  linesBetweenNodes: options?.linesBetweenNodes ?? 0,
   customStackTraceRenderer: options?.customStackTraceRenderer ?? DEFAULT_CUSTOM_STACK_TRACE_RENDERER,
   nativeStackTraceRenderer: options?.nativeStackTraceRenderer ?? DEFAULT_NATIVE_STACK_TRACE_RENDERER,
   nonRootGFErrorHeaderRenderer: options?.nonRootGFErrorHeaderRenderer ?? DEFAULT_NON_ROOT_GF_ERROR_HEADER_RENDERER,
@@ -100,7 +101,8 @@ const resolveOptions = (options: ToLogStringOptions | undefined | null): Resolve
   nonRootNativeErrorHeaderRenderer: options?.nonRootNativeErrorHeaderRenderer ?? DEFAULT_NON_ROOT_NATIVE_ERROR_HEADER_RENDERER,
 })
 
-export const toLogString = (error: GFError, options?: ToLogStringOptions) => (
+export const toLogString = (error: GFError, options?: ToLogStringOptions): string => {
+  const resovledOptions = resolveOptions(options)
   // Resolve options -> convert error to node -> convert node to log stirng
-  termTreeNodeToLogString(errorToNode(error, true, resolveOptions(options)))
-)
+  return termTreeNodeToLogString(errorToNode(error, true, resovledOptions), { linesBetweenNodes: resovledOptions.linesBetweenNodes })
+}

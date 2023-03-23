@@ -1,5 +1,5 @@
-import { createIndentationString } from '../good-flow/common'
-import { IndicatorType, Node, Row } from './types'
+import { createIndentationString, ensureArray, repeat } from '../good-flow/common'
+import { IndicatorType, Node, ResolvedToLogStringOptions, Row, ToLogStringOptions } from './types'
 
 const INDICATOR_TYPE_TO_STRING: { [type in IndicatorType]: string } = {
   [IndicatorType.HAS_NEXT_SIBLING]: '┣━ ',
@@ -8,7 +8,23 @@ const INDICATOR_TYPE_TO_STRING: { [type in IndicatorType]: string } = {
   [IndicatorType.PARENT_IS_LAST_SIBLING]: '   ',
 }
 
-const rowToString = (row: Row): string => {
+const PARENT_HAS_NEXT_SIBLING_INDICATOR_STRING = INDICATOR_TYPE_TO_STRING[IndicatorType.PARENT_HAS_NEXT_SIBLING]
+
+const createLinesBetweenNodesSeperator = (
+  row: Row,
+  options: ResolvedToLogStringOptions,
+  parentIndicatorsStr: string,
+  isLastIndicatorCustom: boolean,
+) => {
+  if (row.isRoot || options.linesBetweenNodes < 1)
+    return ''
+
+  const repeatingStr = `${parentIndicatorsStr}${!isLastIndicatorCustom ? PARENT_HAS_NEXT_SIBLING_INDICATOR_STRING : ''}`.trimEnd()
+
+  return repeat(repeatingStr, options.linesBetweenNodes).join('\n').concat('\n')
+}
+
+const rowToString = (row: Row, options: ResolvedToLogStringOptions): string => {
   let parentIndicatorsStr = ''
   for (let i = 0; i < row.parentIndicatorCells.length; i += 1)
     parentIndicatorsStr += INDICATOR_TYPE_TO_STRING[row.parentIndicatorCells[i]]
@@ -23,17 +39,25 @@ const rowToString = (row: Row): string => {
 
   const indicatorsStr = `${parentIndicatorsStr}${lastIndicatorStr}`
 
-  const shouldContnetLinesSeparatorEndWithContinuationIndicator = !isLastIndicatorCustom && !row.isLastSibling
-  const contentLinesSeparator = `${parentIndicatorsStr}${shouldContnetLinesSeparatorEndWithContinuationIndicator ? INDICATOR_TYPE_TO_STRING[IndicatorType.PARENT_HAS_NEXT_SIBLING] : createIndentationString(lastIndicatorStr.length)}`
+  const contentLinesSeparatorSuffix = !isLastIndicatorCustom && !row.isLastSibling
+    ? PARENT_HAS_NEXT_SIBLING_INDICATOR_STRING
+    : createIndentationString(lastIndicatorStr.length)
 
-  const contentStr = Array.isArray(row.node.content)
-    ? row.node.content.join(`\n${contentLinesSeparator}`)
-    : row.node.content
+  const contentLinesSeparator = `${parentIndicatorsStr}${contentLinesSeparatorSuffix}`
 
-  return `${indicatorsStr}${contentStr}`
+  const rawNodeContent = ensureArray(row.node.content)
+  const nodeContent = rawNodeContent
+
+  const contentStr = nodeContent.join(`\n${contentLinesSeparator}`)
+
+  const emptyLinesBeforeNodeContent = createLinesBetweenNodesSeperator(row, options, parentIndicatorsStr, isLastIndicatorCustom)
+
+  return `${emptyLinesBeforeNodeContent}${indicatorsStr}${contentStr}`
 }
 
-const rowsToString = (rows: Row[]): string => rows.map(rowToString).join('\n')
+const rowsToString = (rows: Row[], options: ResolvedToLogStringOptions): string => (
+  rows.map(r => rowToString(r, options)).join('\n')
+)
 
 const nodeToRow = (
   node: Node,
@@ -44,6 +68,7 @@ const nodeToRow = (
 ): Row => {
   const row: Row = {
     isLastSibling,
+    hasChildren: node.children != null && node.children.length > 0,
     lastIndicatorCell: !isRootNode
       ? node.indicator ?? (isLastSibling
         ? IndicatorType.IS_LAST_SIBLING
@@ -51,6 +76,7 @@ const nodeToRow = (
       : null,
     parentIndicatorCells: [],
     node,
+    isRoot: isRootNode,
   }
   for (let x = 0; x < depth; x += 1) {
     if (parentHasNextSiblingIndices[x])
@@ -87,9 +113,14 @@ const nodesToRows = (nodes: Node[], depth: number, parentHasNextSiblingIndices: 
   return rows
 }
 
-export const toLogString = (node: Node) => {
+const resolveOptions = (options: ToLogStringOptions | undefined | null): ResolvedToLogStringOptions => ({
+  linesBetweenNodes: options?.linesBetweenNodes ?? 0,
+})
+
+export const toLogString = (node: Node, options?: ToLogStringOptions) => {
+  const resolvedOptions = resolveOptions(options)
   const startDepth = 0
   const rootRow = nodeToRow(node, startDepth, [], true, true)
   const rows = nodesToRows(node.children, startDepth, [], { y: 0 })
-  return rowsToString([rootRow].concat(rows))
+  return rowsToString([rootRow].concat(rows), resolvedOptions)
 }

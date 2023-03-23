@@ -9,9 +9,11 @@ export type NodeContent = string | string[]
 
 export type Row = {
   isLastSibling: boolean
+  hasChildren: boolean
   parentIndicatorCells: IndicatorType[]
   lastIndicatorCell: IndicatorType | string
   node: Node
+  isRoot: boolean
 }
 
 export type Node = {
@@ -19,3 +21,12 @@ export type Node = {
   content: NodeContent
   children?: Node[]
 }
+
+export type ToLogStringOptions = {
+  /**
+   * @default 0
+   */
+  linesBetweenNodes?: number
+}
+
+export type ResolvedToLogStringOptions = Required<ToLogStringOptions>
