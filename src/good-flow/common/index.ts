@@ -22,3 +22,17 @@ export const createIndentationString = (n: number): string => PREMADE_INDENTS[n]
 export const ensureArray = <T extends any>(input: T | T[]): T[] => (Array.isArray(input)
   ? input
   : [input])
+
+export const repeatStr = (s: string, n: number): string => {
+  let result = ''
+  for (let i = 0; i < n; i += 1)
+    result += s
+  return result
+}
+
+export const repeat = <T extends any>(item: T, n: number): T[] => {
+  const result = []
+  for (let i = 0; i < n; i += 1)
+    result.push(item)
+  return result
+}

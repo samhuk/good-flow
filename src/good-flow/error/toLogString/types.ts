@@ -14,6 +14,12 @@ export type NativeErrorHeaderRenderer = (error: Error) => GFString | GFString[]
 
 export type ToLogStringOptions = {
   /**
+   * Determines how the nodes of your error vertically spaced.
+   *
+   * @default 0 // (No vertical spacing)
+   */
+  linesBetweenNodes?: number
+  /**
    * Controls the rendering of native stack traces (i.e. from the native Javascript `Error` class).
    *
    * To illustrate where this corresponds to and the default rendering:
