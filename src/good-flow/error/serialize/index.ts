@@ -1,17 +1,15 @@
-import { isGFError, isStackTraceNative } from '..'
-import { serializeAdvice } from '../../advice/serialization'
+import { isStackTraceNative } from '..'
+import { serializeAdvice } from '../../advice/serialize'
 import { normalizeGFString } from '../../string'
+import { isGFError } from '../identification'
+import { SerializedStackTrace, SerializedGFErrorOrError, SerializedGFError } from '../serialized/types'
 import { DEFAULT_CUSTOM_STACK_TRACE_RENDERER } from '../toLogString'
-import { GFError, GFErrorInner, GFErrorOrError, StackTrace } from '../types'
+import { StackTrace, GFErrorOrError, GFError } from '../types'
 import {
+  NativeStackTraceSerializer,
   CustomStackTraceSerializer,
   NativeErrorSerializer,
-  NativeStackTraceSerializer,
   ResolvedSerializeGFErrorOptions,
-  SerializedGFError,
-  SerializedGFErrorInner,
-  SerializedGFErrorOrError,
-  SerializedStackTrace,
   SerializeGFErrorOptions,
 } from './types'
 

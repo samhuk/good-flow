@@ -1,6 +1,7 @@
 import { normalizeGFString } from '../../string'
 import { GFAdvice, GFTip } from '../types'
-import { SerializedGFAdvice, SerializedGFTip, SerializeGFAdviceOptions } from './types'
+import { SerializedGFAdvice, SerializedGFTip } from '../serialized/types'
+import { SerializeGFAdviceOptions } from './types'
 
 const serializeTip = (tip: GFTip, options?: SerializeGFAdviceOptions): SerializedGFTip => {
   if (typeof tip !== 'object')

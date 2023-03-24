@@ -20,7 +20,9 @@ export type ToLogStringOptions = {
    */
   linesBetweenNodes?: number
   /**
-   * Controls the rendering of native stack traces (i.e. from the native Javascript `Error` class).
+   * Controls the rendering of native error stack traces (i.e. from the native Javascript `Error` class).
+   *
+   * Define as `false` to not show at all.
    *
    * To illustrate where this corresponds to and the default rendering:
    * ```text
@@ -31,9 +33,11 @@ export type ToLogStringOptions = {
    * ...
    * ```
    */
-  nativeStackTraceRenderer?: NativeStackTraceRenderer
+  nativeStackTraceRenderer?: NativeStackTraceRenderer | false
   /**
-   * Controls the rendering of custom stack traces (captured with stack-util).
+   * Controls the rendering of GFError stack traces (captured with `stack-util`).
+   *
+   * Define as `false` to not show at all.
    *
    * To illustrate where this corresponds to and the default rendering:
    * ```text
@@ -44,7 +48,7 @@ export type ToLogStringOptions = {
    * ...
    * ```
    */
-  customStackTraceRenderer?: CustomStackTraceRenderer
+  customStackTraceRenderer?: CustomStackTraceRenderer | false
   /**
    * Controls the rendering of the header of the root error.
    *

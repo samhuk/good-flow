@@ -56,18 +56,21 @@ describe('good-flow/error/serialization', () => {
       })
 
       expect(result).toEqual({
+        msg: 'Could not parse configuration',
         advice: {
           tips: [{
             msg: 'Check that configuration file at nonexistent-file.txt exists.',
             url: 'https://github.com/samhuk/good-flow',
           }, 'Check that the configuration file at nonexistent-file.txt is accessible for your user account permissions.'],
         },
-        inner: [{
-          msg: 'Could not read configuration file at nonexistent-file.txt.',
-        }, {
-          msg: 'Could not read configuration file at nonexistent-file.txt.',
-        }],
-        msg: 'Could not parse configuration',
+        inner: [
+          {
+            msg: 'Could not read configuration file at nonexistent-file.txt.',
+          },
+          {
+            msg: 'Could not read configuration file at nonexistent-file.txt.',
+          },
+        ],
       })
     })
   })
