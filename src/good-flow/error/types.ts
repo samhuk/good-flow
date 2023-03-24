@@ -1,9 +1,10 @@
 import { CallSite } from 'stack-utils'
-import { GF_ERROR_IDENTIFIER_PROP_NAME } from '.'
 import { GFAdvice } from '../advice/types'
 import { GFString } from '../string/types'
-import { SerializedGFError, SerializeGFErrorOptions } from './serialization/types'
+import { SerializedGFError } from './serialized/types'
+import { SerializeGFErrorOptions } from './serialize/types'
 import { ToLogStringOptions } from './toLogString/types'
+import { GF_ERROR_IDENTIFIER_PROP_NAME } from './identification'
 
 export type StackTrace = CallSite[] | string
 

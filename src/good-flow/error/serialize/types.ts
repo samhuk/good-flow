@@ -1,5 +1,4 @@
 import { CallSite } from 'stack-utils'
-import { SerializedGFAdvice } from '../../advice/serialization/types'
 
 export type NativeStackTraceSerializer = (stack: string) => string | null
 
@@ -42,30 +41,4 @@ export type ResolvedSerializeGFErrorOptions = {
   nativeStackTraceSerializer: NativeStackTraceSerializer | false
   customStackTraceSerializer: CustomStackTraceSerializer | false
   nativeErrorSerializer: NativeErrorSerializer | false
-}
-
-export type SerializedStackTrace = string | string[]
-
-export type SerializedGFErrorOrError = SerializedGFError | Error
-
-export type SerializedGFErrorInner = SerializedGFErrorOrError | SerializedGFErrorOrError[]
-
-export type SerializedGFError = {
-  /**
-   * The message of the error.
-   */
-  msg: string
-  /**
-   * Optional child error(s) of this error. This could either be another `GFError` or
-   * a native Javascript Error or Error-like class.
-   */
-  inner?: SerializedGFErrorInner
-  /**
-   * Optional advice about the error, such as tips on how it could potentially be resolved.
-   */
-  advice?: SerializedGFAdvice
-  /**
-   * Optional stack trace of this error.
-   */
-  stack?: SerializedStackTrace
 }

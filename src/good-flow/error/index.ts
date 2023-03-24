@@ -1,14 +1,8 @@
 import StackUtils from 'stack-utils'
 import { GFString } from '../string/types'
-import { serialize } from './serialization'
+import { serialize } from './serialize'
 import { toLogString } from './toLogString'
 import { GFError, GFErrorOptions, StackTrace } from './types'
-
-export const GF_ERROR_IDENTIFIER_PROP_NAME = '__gfError'
-
-export const isGFError = (error: GFError | Error): error is GFError => (
-  GF_ERROR_IDENTIFIER_PROP_NAME in error
-)
 
 export const isStackTraceNative = (stackTrace: StackTrace): stackTrace is string => (
   typeof stackTrace === 'string'
@@ -78,7 +72,7 @@ export const createGFError = (options: GFErrorOptions | GFString): GFError => {
 
       return error
     },
-    [GF_ERROR_IDENTIFIER_PROP_NAME]: true,
+    __gfError: true,
   }
 
   return error

@@ -1,10 +1,11 @@
 import colors from 'colors/safe'
 import StackUtils from 'stack-utils'
-import { isGFError, isStackTraceNative } from '..'
+import { isStackTraceNative } from '..'
 import { toLogString as termTreeNodeToLogString } from '../../../term-tree-formatter'
 import { Node, NodeContent } from '../../../term-tree-formatter/types'
 import { ensureArray } from '../../common'
 import { normalizeGFString } from '../../string'
+import { isGFError } from '../identification'
 import { GFError, GFErrorInner, GFErrorOrError, StackTrace } from '../types'
 import { adviceToNodes } from './advice'
 import {
@@ -50,7 +51,9 @@ const singleErrorInnerToNode = (
   ? errorToNode(error, false, options)
   : {
     content: ensureArray(options.nonRootNativeErrorHeaderRenderer(error)).map(gfString => normalizeGFString(gfString))
-      .concat(normalizeStackTraceRendererOutput(options.nativeStackTraceRenderer(error.stack))),
+      .concat(options.nativeStackTraceRenderer === false
+        ? []
+        : normalizeStackTraceRendererOutput(options.nativeStackTraceRenderer(error.stack))),
   })
 
 const errorInnerToNodes = (inner: GFErrorInner, options: ResolvedToLogStringOptions): Node[] => (
@@ -63,8 +66,8 @@ const stackTraceToNodeContent = (
 ): NodeContent => (
   normalizeStackTraceRendererOutput(
     isStackTraceNative(stackTrace)
-      ? options.nativeStackTraceRenderer(stackTrace)
-      : options.customStackTraceRenderer(stackTrace),
+      ? options.nativeStackTraceRenderer === false ? [] : options.nativeStackTraceRenderer(stackTrace)
+      : options.customStackTraceRenderer === false ? [] : options.customStackTraceRenderer(stackTrace),
   )
 )
 
