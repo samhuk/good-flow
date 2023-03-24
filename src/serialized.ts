@@ -5,5 +5,7 @@
  * Things exported from here are available like so: `import ... from 'good-flow/serialized`
  */
 
+export { isSerializedGFError } from './good-flow/error/identification'
+
 export type { SerializedGFError, SerializedStackTrace } from './good-flow/error/serialized/types'
 export type { SerializedGFAdvice, SerializedGFTip, SerializedGFTips } from './good-flow/advice/serialized/types'
