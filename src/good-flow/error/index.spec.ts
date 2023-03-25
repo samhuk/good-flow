@@ -109,5 +109,29 @@ stack trace line 2
         ],
       })
     })
+
+    test('clone', () => {
+      const originalErr = fn({ msg: 'Error', stack: null })
+
+      const errClone = originalErr.clone()
+
+      expect(errClone.serialize()).toEqual({
+        msg: 'Error',
+      })
+
+      const inner1 = fn({ msg: 'Inner error', stack: null })
+      errClone.addInner(inner1)
+
+      // Expect error clone to be affected
+      expect(errClone.serialize()).toEqual({
+        msg: 'Error',
+        inner: { msg: 'Inner error' },
+      })
+
+      // Expect original error to be unaffected
+      expect(originalErr.serialize()).toEqual({
+        msg: 'Error',
+      })
+    })
   })
 })
