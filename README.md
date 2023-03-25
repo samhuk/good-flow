@@ -19,6 +19,7 @@ GoodFlow improves how you do errors in Javascript:
 * Nest errors with inner errors to attach informative context.
 * Print errors to console beautifully.
 * Serialize errors to make it a [DTO](https://en.wikipedia.org/wiki/Data_transfer_object) (e.g. to make it JSON-serializable).
+* Enable flat try-catch logic.
 
 ## Usage Overview
 
@@ -54,9 +55,24 @@ if (err != null) {
 exit(0)
 ```
 
+## Logging
+
+Errors can be logged to a Node.js console. For example:
+
+```typescript
+const err = createGFError('This is an error')
+console.log(err.toLogString())
+err.log() // Equivalent to above
+err.log({ outlet: 'error' }) // // Equivalent to above but using console.error(...)
+```
+
+A preview of how errors log to console by default:
+
+![Logging Preview](./img/img1.png)
+
 ## Serialization
 
-Errors can be serialized, which converts them to a form that contains no non-serializable data, such as functions. This enables them to be, for example, JSON-serializable and sent over a network as a DTO.
+Errors can be serialized, converting them to a form that contains only serializable data (i.e. no functions, etc.). This enables them to be, for example, JSON-serializable and sent over a network as a [DTO](https://en.wikipedia.org/wiki/Data_transfer_object).
 
 To create and serialize an error (e.g. server-side):
 
@@ -68,7 +84,7 @@ const serializedErr = err.serialize()
 const errJson = JSON.stringify(serializedErr)
 ```
 
-For the client-side, types for a serialized `GFError` are available seperately at `good-flow/lib/serialized` such that Node.js-only packages such as `colors` are not co-imported along (which would cause build/bundle issues for the web). For example (e.g. client-side):
+For client-side code, types for a serialized `GFError` are available seperately at `good-flow/lib/serialized` such that Node.js-only packages are not co-imported along (which would cause build/bundle issues for browsers). For example:
 
 ```typescript
 import { SerializedGFError } from 'good-flow/lib/serialized'
@@ -76,19 +92,38 @@ import { SerializedGFError } from 'good-flow/lib/serialized'
 type MyApiResponse<TData> = { data: TData, err: SerializedGFError }
 ```
 
-## Logging
+## Try-Catching
 
-Errors can be logged to a Node.js console. For example:
+`Try`-`catch` logic can be done in a flatter way that more easily integrates with GoodFlow via `gfTry`. For example:
 
 ```typescript
-const err = createGFError('This is an error')
-err.log() // Equivalent to console.log(err.toLogString())
-err.log({ outlet: 'error' }) // // Equivalent to console.error(err.toLogString())
+import * as fs from 'fs'
+import { gfTry } from 'good-flow'
+
+const task = path => gfTry(
+  // Try
+  () => fs.readFileSync(path, { encoding: 'utf8' }),
+  // Catch (can be take several forms)
+  { msg: c => `Could not read configuration file at ${c.cyan(path)}.` },
+)
+
+const [result, error] = task('foo.txt')
+/* error:
+{  
+  msg: Could not read configuration file at foo.txt
+  inner: {
+    name: 'ENOENT',
+    message: 'File not found...',
+    stack: ...,
+    ...
+  }
+}
+*/
 ```
 
-A preview of how errors log to console by default:
+## Performance
 
-![Logging Preview](./img/img1.png)
+The base concept of GoodFlow (function results as tuple of data and/or error) does not incur a significant performance impact over using a native try-catch block. [Proof-of-concept](https://jsbench.me/yglfo9fi2y/1). More rigorous performance tests and data are in the pipeline.
 
 ## Development
 
