@@ -9,6 +9,7 @@
  */
 
 export { createGFError } from './good-flow/error'
+export { gfTry } from './good-flow/try'
 export { isGFError } from './good-flow/error/identification'
 
 export * from './types'
