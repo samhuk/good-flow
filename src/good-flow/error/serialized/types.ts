@@ -1,5 +1,4 @@
 import { SerializedGFAdvice } from '../../advice/serialized/types'
-import { GF_ERROR_IDENTIFIER_PROP_NAME } from '../identification'
 
 export type SerializedStackTrace = string | string[]
 

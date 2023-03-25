@@ -1,18 +1,12 @@
 import * as fs from 'fs'
 import { createGFError } from '../good-flow/error'
+import { gfTry } from '../good-flow/try'
 import { GFResult } from '../types'
 
-const subTask = (path: string): GFResult<string> => {
-  try {
-    return [fs.readFileSync(path, { encoding: 'utf8' }), null]
-  }
-  catch (e: any) {
-    return [undefined, createGFError({
-      msg: c => `Could not read configuration file at ${c.cyan(path)}.`,
-      inner: e,
-    })]
-  }
-}
+const subTask = (path: string): GFResult<string> => gfTry(
+  () => fs.readFileSync(path, { encoding: 'utf8' }),
+  { msg: c => `Could not read configuration file at ${c.cyan(path)}.` },
+)
 
 export const task = (): GFResult<string[]> => {
   const path = 'nonexistent-file.txt'

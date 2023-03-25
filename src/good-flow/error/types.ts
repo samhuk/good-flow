@@ -127,5 +127,13 @@ export type GFError = {
    *   .addInner(createGFError('Inner error 2'))
    */
   addInner: (inner: GFError) => GFError
+  /**
+   * Clones this error.
+   *
+   * @example
+   * const err = createGFError('An error occured')
+   * const clonedErr = err.clone()
+   */
+  clone: () => GFError
   [GF_ERROR_IDENTIFIER_PROP_NAME]: true
 }

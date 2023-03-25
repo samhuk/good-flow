@@ -1,5 +1,5 @@
 import { SerializedGFError } from './serialized/types'
-import { GFError } from './types'
+import { GFError, GFErrorOptions } from './types'
 
 export const GF_ERROR_IDENTIFIER_PROP_NAME = '__gfError'
 
@@ -11,6 +11,17 @@ export const GF_ERROR_IDENTIFIER_PROP_NAME = '__gfError'
  * isGFError(createGFError(...)) // true
  */
 export const isGFError = (error: GFError | Error): error is GFError => (
+  GF_ERROR_IDENTIFIER_PROP_NAME in error
+)
+
+/**
+ * Asserts that the provided error is a `GFError` and not `GFErrorOptions`.
+ *
+ * @example
+ * isGFError({ message: 'This is an error' }) // false
+ * isGFError(createGFError(...)) // true
+ */
+export const isGFErrorAndNotOptions = (error: GFError | GFErrorOptions): error is GFError => (
   GF_ERROR_IDENTIFIER_PROP_NAME in error
 )
 

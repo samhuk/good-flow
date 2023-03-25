@@ -72,6 +72,12 @@ export const createGFError = (options: GFErrorOptions | GFString): GFError => {
 
       return error
     },
+    clone: () => createGFError({
+      msg: error.msg,
+      advice: error.advice,
+      inner: error.inner,
+      stack: error.stack,
+    }),
     __gfError: true,
   }
 

@@ -4,7 +4,7 @@ import { task } from './task'
 const main = () => {
   const [taskResult, err] = task()
   if (err != null) {
-    console.log(err.toLogString({ linesBetweenNodes: 1 }))
+    console.log(err.toLogString({ linesBetweenNodes: 0 }))
 
     exit(1)
   }
