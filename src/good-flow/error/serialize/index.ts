@@ -75,6 +75,7 @@ const resolveOptions = (options: SerializeGFErrorOptions | undefined | null): Re
   customStackTraceSerializer: options?.customStackTraceSerializer ?? DEFAULT_CUSTOM_STACK_TRACE_SERIALIZER,
   nativeStackTraceSerializer: options?.nativeStackTraceSerializer ?? DEFAULT_NATIVE_STACK_TRACE_SERIALIZER,
   nativeErrorSerializer: options?.nativeErrorSerializer ?? DEFAULT_NATIVE_ERROR_SERIALIZER,
+  customDataSerializer: options?.customDataSerializer ?? (data => data),
 })
 
 const _serialize = (error: GFError, options: ResolvedSerializeGFErrorOptions): SerializedGFError => {
@@ -99,6 +100,8 @@ const _serialize = (error: GFError, options: ResolvedSerializeGFErrorOptions): S
         serializedError.inner = serializedInner
     }
   }
+  if (error.data != null && options.customDataSerializer !== false)
+    serializedError.data = options.customDataSerializer(error.data)
 
   return serializedError
 }

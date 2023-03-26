@@ -12,7 +12,7 @@ export type GFErrorOrError = GFError | Error
 
 export type GFErrorInner = GFErrorOrError | GFErrorOrError[]
 
-export type GFErrorOptions = {
+export type GFErrorOptions<TData extends any = any> = {
   /**
    * The message of the error.
    */
@@ -34,12 +34,16 @@ export type GFErrorOptions = {
    * If you do not want the error to have a stack trace, set this explicitly to `null`.
    */
   stack?: CallSite[] | string
+  /**
+   * Optional custom data of this error.
+   */
+  data?: TData
 }
 
 /**
  * An error, potentially with child error(s), advice/tip(s), and a stack trace.
  */
-export type GFError = {
+export type GFError<TData extends any = any> = {
   /**
    * The message of the error.
    */
@@ -57,6 +61,10 @@ export type GFError = {
    * Optional stack trace of this error.
    */
   stack?: StackTrace
+  /**
+   * Custom data for the error.
+   */
+  data?: TData
   /**
    * Converts this error to a string that can be logged to console.
    */

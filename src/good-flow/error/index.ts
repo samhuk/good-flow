@@ -50,6 +50,7 @@ export const createGFError = (options: GFErrorOptions | GFString): GFError => {
      * Else (user has not explicitly specified it), then create a default one and use it.
      */
     stack: _options.stack !== undefined ? _options.stack : createDefaultStackTrace(),
+    data: _options.data,
     toLogString: __options => toLogString(error, __options),
     log: __options => {
       const logString = toLogString(error, __options)
@@ -77,6 +78,7 @@ export const createGFError = (options: GFErrorOptions | GFString): GFError => {
       advice: error.advice,
       inner: error.inner,
       stack: error.stack,
+      data: error.data,
     }),
     __gfError: true,
   }

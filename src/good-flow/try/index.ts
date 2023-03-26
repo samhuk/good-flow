@@ -33,7 +33,7 @@ const createGFResultFromObjectCatcher = <TData extends any>(
   if (addInner)
     error.addInner(e)
 
-  const data = isGFError ? undefined : catcher.data
+  const data = isGFError ? undefined : catcher.resultData
 
   return [data, error]
 }

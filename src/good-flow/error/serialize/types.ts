@@ -1,5 +1,7 @@
 import { CallSite } from 'stack-utils'
 
+export type CustomDataSerializer<TData extends any = any> = (data: TData) => any
+
 export type NativeStackTraceSerializer = (stack: string) => string | null
 
 export type CustomStackTraceSerializer = (stack: CallSite[], colorsEnabled: boolean) => string | string[] | null
@@ -34,6 +36,12 @@ export type SerializeGFErrorOptions = {
    * To prevent all native errors from being serialized, set this to `false`
    */
   nativeErrorSerializer?: NativeErrorSerializer | false
+  /**
+   * Serializer for the custom data of errors.
+   *
+   * To prevent all custom data of errors from being serialized, set this to `false`.
+   */
+  customDataSerializer?: CustomDataSerializer | false
 }
 
 export type ResolvedSerializeGFErrorOptions = {
@@ -41,4 +49,5 @@ export type ResolvedSerializeGFErrorOptions = {
   nativeStackTraceSerializer: NativeStackTraceSerializer | false
   customStackTraceSerializer: CustomStackTraceSerializer | false
   nativeErrorSerializer: NativeErrorSerializer | false
+  customDataSerializer: CustomDataSerializer | false
 }

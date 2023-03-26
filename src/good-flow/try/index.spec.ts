@@ -77,7 +77,7 @@ describe('good-flow/try', () => {
 
       test('failing tryer, including data.', () => {
         assertFailingTryerIncludingData(
-          gfTry(failingTryer, { msg: 'Could not do task.', data: EXPECTED_DATA }),
+          gfTry(failingTryer, { msg: 'Could not do task.', resultData: EXPECTED_DATA }),
         )
       })
     })

@@ -111,12 +111,17 @@ stack trace line 2
     })
 
     test('clone', () => {
-      const originalErr = fn({ msg: 'Error', stack: null })
+      const originalErr = fn({ msg: 'Error', data: 123, advice: { url: 'foo', tips: [] }, stack: null })
 
       const errClone = originalErr.clone()
 
       expect(errClone.serialize()).toEqual({
         msg: 'Error',
+        data: 123,
+        advice: {
+          url: 'foo',
+          tips: [],
+        },
       })
 
       const inner1 = fn({ msg: 'Inner error', stack: null })
@@ -126,11 +131,21 @@ stack trace line 2
       expect(errClone.serialize()).toEqual({
         msg: 'Error',
         inner: { msg: 'Inner error' },
+        data: 123,
+        advice: {
+          url: 'foo',
+          tips: [],
+        },
       })
 
       // Expect original error to be unaffected
       expect(originalErr.serialize()).toEqual({
         msg: 'Error',
+        data: 123,
+        advice: {
+          url: 'foo',
+          tips: [],
+        },
       })
     })
   })

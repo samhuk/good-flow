@@ -6,7 +6,7 @@ export type SerializedGFErrorOrError = SerializedGFError | Error
 
 export type SerializedGFErrorInner = SerializedGFErrorOrError | SerializedGFErrorOrError[]
 
-export type SerializedGFError = {
+export type SerializedGFError<TData extends any = any> = {
   /**
    * The message of the error.
    */
@@ -24,4 +24,8 @@ export type SerializedGFError = {
    * Optional stack trace of this error.
    */
   stack?: SerializedStackTrace
+  /**
+   * Custom data of this error.
+   */
+  data?: TData
 }

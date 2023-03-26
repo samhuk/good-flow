@@ -9,7 +9,7 @@ export type ObjectCatcher<TData extends any = any> =
        *
        * @default undefined
        */
-      data?: TData
+      resultData?: TData
     }
   )
   | GFError
