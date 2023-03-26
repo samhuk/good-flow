@@ -1,6 +1,6 @@
 {
   "name": "good-flow",
-  "version": "0.0.17",
+  "version": "0.0.18",
   "description": "Improve how you do Javascript errors",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
