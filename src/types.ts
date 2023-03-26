@@ -8,3 +8,10 @@
 export type { GFError } from './good-flow/error/types'
 export type { GFResult } from './good-flow/result/types'
 export type { GFString } from './good-flow/string/types'
+export type {
+  SerializeGFErrorOptions,
+  CustomDataSerializer,
+  NativeStackTraceSerializer,
+  CustomStackTraceSerializer,
+  NativeErrorSerializer,
+} from './good-flow/error/serialize/types'
