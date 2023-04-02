@@ -10,6 +10,7 @@
 
 export { createGFError } from './good-flow/error'
 export { gfTry } from './good-flow/try'
+export { gfTryAsync } from './good-flow/try/async'
 export { isGFError } from './good-flow/error/identification'
 
 export * from './types'

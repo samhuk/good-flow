@@ -36,3 +36,14 @@ export type GFTry<TData extends any = any, TCatcher extends GFCatcher<TData> = G
    */
   addInner?: boolean
 ) => GFResult<TData>
+
+export type GFTryAsync<TData extends any = any, TCatcher extends GFCatcher<TData> = GFCatcher<TData>> = (
+  tryer: () => Promise<TData>,
+  catchers: TCatcher,
+  /**
+   * Controls whether the error that is caught is automatically added as an inner to the provided error.
+   *
+   * @types true
+   */
+  addInner?: boolean
+) => Promise<GFResult<TData>>

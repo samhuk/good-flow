@@ -1,42 +1,5 @@
-import { createGFError } from '../error'
-import { isGFErrorAndNotOptions } from '../error/identification'
-import { GFResult } from '../result/types'
-import { ArrayCatcher, GFTry, ObjectCatcher } from './types'
-
-export const createGFResultFromArrayCatcher = <TData extends any>(
-  catcher: ArrayCatcher,
-  e: any,
-  addInner: boolean,
-): GFResult<TData> => {
-  const data = catcher[0]
-  const errorOrErrorOptions = catcher[1]
-  const error = isGFErrorAndNotOptions(errorOrErrorOptions)
-    ? errorOrErrorOptions
-    : createGFError(errorOrErrorOptions)
-
-  if (addInner)
-    error.addInner(e)
-
-  return [data, error]
-}
-
-export const createGFResultFromObjectCatcher = <TData extends any>(
-  catcher: ObjectCatcher<TData>,
-  e: any,
-  addInner: boolean,
-): GFResult<TData> => {
-  const isGFError = isGFErrorAndNotOptions(catcher)
-  const error = isGFError
-    ? catcher
-    : createGFError(catcher)
-
-  if (addInner)
-    error.addInner(e)
-
-  const data = isGFError ? undefined : catcher.resultData
-
-  return [data, error]
-}
+import { createGFResultFromArrayCatcher, createGFResultFromObjectCatcher } from '.'
+import { GFTryAsync } from './types'
 
 /**
  * Runs the given `tryer` function, catching the error it may throw with the given `catcher`.
@@ -72,13 +35,14 @@ export const createGFResultFromObjectCatcher = <TData extends any>(
  *   e => [undefined, createGFError({ msg: 'Error occured.' })],
  * )
  */
-export const gfTry: GFTry = (
+export const gfTryAsync: GFTryAsync = async (
   tryer,
   catcher,
   addInner,
 ) => {
   try {
-    return [tryer()]
+    const resultData = await tryer()
+    return [resultData]
   }
   catch (e: any) {
     const _addInner = addInner ?? true
