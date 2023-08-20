@@ -20,6 +20,7 @@ export const task = (): GFResult<string[]> => {
       msg: 'Could not parse configuration',
       inner: errors,
       advice: {
+        url: 'https://example.com',
         tips: [
           { msg: c => `Check that configuration file at ${c.cyan(path)} exists.`, url: 'https://github.com/samhuk/good-flow' },
           c => `Check that the configuration file at ${c.cyan(path)} is accessible for your user account permissions.`,
